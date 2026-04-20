@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pre-Board Inspection — YHC 6095 6th Ave</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono&display=swap" rel="stylesheet">
+<style>
+:root{
+  --purple:#3C3489;--purple-light:#EEEDFE;--purple-mid:#534AB7;--purple-text:#26215C;
+  --green:#639922;--green-light:#EAF3DE;--green-dark:#27500A;--green-border:#97C459;
+  --red:#E24B4A;--red-light:#FCEBEB;--red-dark:#791F1F;--red-border:#F09595;
+  --amber:#EF9F27;--amber-light:#FAEEDA;--amber-dark:#633806;--amber-border:#FAC775;
+  --blue-light:#E6F1FB;--blue-dark:#0C447C;
+  --gray-bg:#F7F6F3;--gray-border:#E2E0DA;--gray-mid:#888780;--gray-dark:#2C2C2A;
+  --white:#fff;--text:#1A1A18;--muted:#5F5E5A;
+  --r:10px;--rs:6px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--gray-bg);color:var(--text);font-size:15px;line-height:1.5;min-height:100vh}
+
+/* NAV */
+.topnav{background:var(--purple);display:flex;align-items:stretch;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,0.1)}
+.brand{display:flex;align-items:center;gap:10px;padding:12px 16px 12px 16px;border-right:1px solid rgba(255,255,255,0.15);margin-right:8px;flex-shrink:0}
+.brand-mark{width:30px;height:30px;background:rgba(255,255,255,0.15);border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:white;letter-spacing:-0.5px}
+.brand-text .name{color:white;font-size:13px;font-weight:600;line-height:1.2}
+.brand-text .sub{color:rgba(255,255,255,0.55);font-size:11px}
+.navtabs{display:flex}
+.navtab{padding:0 16px;color:rgba(255,255,255,0.6);font-size:13px;font-weight:500;cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:all 0.15s;font-family:'DM Sans',sans-serif;height:100%}
+.navtab:hover{color:white}
+.navtab.on{color:white;border-bottom-color:rgba(255,255,255,0.8)}
+
+/* LAYOUT */
+.page{display:none}.page.on{display:block}
+.wrap{max-width:680px;margin:0 auto;padding:24px 16px 80px}
+
+/* CARDS */
+.card{background:var(--white);border:1px solid var(--gray-border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.card-head{padding:14px 18px;border-bottom:1px solid var(--gray-border);display:flex;align-items:center;justify-content:space-between}
+.card-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted)}
+.card-body{padding:18px}
+
+/* FORM */
+label.lbl{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--muted);margin-bottom:5px}
+input[type=text],select,textarea{width:100%;padding:9px 11px;border:1px solid var(--gray-border);border-radius:var(--rs);font-size:14px;font-family:'DM Sans',sans-serif;color:var(--text);background:var(--white);transition:border-color 0.15s,box-shadow 0.15s;-webkit-appearance:none}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--purple-mid);box-shadow:0 0 0 3px rgba(83,74,183,0.12)}
+textarea{min-height:68px;resize:vertical;line-height:1.5}
+.field{margin-bottom:12px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 18px;border-radius:var(--rs);font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;border:none;transition:all 0.15s;letter-spacing:0.01em}
+.btn:active{transform:scale(0.98)}
+.btn-purple{background:var(--purple);color:white}.btn-purple:hover{background:var(--purple-text)}
+.btn-green{background:var(--green);color:white}.btn-green:hover{background:var(--green-dark)}
+.btn-red{background:var(--red);color:white}.btn-red:hover{background:var(--red-dark)}
+.btn-out{background:var(--white);border:1px solid var(--gray-border);color:var(--text)}.btn-out:hover{background:var(--gray-bg)}
+.btn-full{width:100%}
+.btnrow{display:flex;gap:8px;margin-top:18px}
+.btnrow .btn{flex:1}
+
+/* BADGES */
+.badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:0.02em}
+.b-hold{background:var(--red-light);color:var(--red-dark)}
+.b-clear{background:var(--green-light);color:var(--green-dark)}
+.b-pending{background:var(--amber-light);color:var(--amber-dark)}
+.b-gray{background:#F1EFE8;color:#444441}
+.b-purple{background:var(--purple-light);color:var(--purple-text)}
+.b-info{background:var(--blue-light);color:var(--blue-dark)}
+
+/* CHECKLIST */
+.check-item{border:1px solid var(--gray-border);border-radius:var(--rs);margin-bottom:7px;overflow:hidden;transition:border-color 0.15s}
+.check-item.passed{border-color:var(--green-border)}
+.check-item.flagged{border-color:var(--red)}
+.check-item.skipped{border-color:#B4B2A9;opacity:0.65}
+.check-row{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--white)}
+.check-label{flex:1;font-size:13px;line-height:1.4}
+.sbtns{display:flex;gap:4px;flex-shrink:0}
+.sbtn{padding:4px 9px;border-radius:20px;border:1px solid var(--gray-border);font-size:11px;font-weight:600;cursor:pointer;background:var(--white);color:var(--muted);font-family:'DM Sans',sans-serif;transition:all 0.12s}
+.sbtn:hover{border-color:#888;color:var(--text)}
+.sbtn.pass.on{background:var(--green-light);color:var(--green-dark);border-color:var(--green-border)}
+.sbtn.flag.on{background:var(--red-light);color:var(--red-dark);border-color:var(--red-border)}
+.sbtn.na.on{background:#F1EFE8;color:#444441;border-color:#B4B2A9}
+
+/* DEF PANEL */
+.defpanel{display:none;padding:12px 14px 14px;background:#FFF5F5;border-top:1px solid var(--red-border)}
+.defpanel.open{display:block}
+.defpanel .lbl{color:var(--red-dark)}
+.trade-pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+.tpill{padding:4px 11px;border-radius:20px;border:1px solid var(--gray-border);font-size:12px;font-weight:500;cursor:pointer;background:var(--white);color:var(--muted);transition:all 0.12s;font-family:'DM Sans',sans-serif}
+.tpill.on{background:var(--purple-light);color:var(--purple-text);border-color:#AFA9EC}
+.improw{display:flex;gap:6px;margin-top:4px}
+.impbtn{flex:1;padding:7px;border-radius:var(--rs);border:1px solid var(--gray-border);font-size:12px;font-weight:500;text-align:center;cursor:pointer;background:var(--white);color:var(--muted);font-family:'DM Sans',sans-serif;transition:all 0.12s}
+.impbtn.hold.on{background:var(--red-light);color:var(--red-dark);border-color:var(--red-border)}
+.impbtn.minor.on{background:var(--amber-light);color:var(--amber-dark);border-color:var(--amber-border)}
+
+/* PROGRESS */
+.prog-wrap{height:4px;background:var(--gray-border);border-radius:2px;margin:10px 0 14px;overflow:hidden}
+.prog-fill{height:100%;border-radius:2px;background:var(--purple-mid);transition:width 0.3s}
+.countrow{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.chip{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--muted)}
+.dot{width:7px;height:7px;border-radius:50%}
+.dg{background:var(--green)}.dr{background:var(--red)}.da{background:var(--amber)}.dgy{background:var(--gray-mid)}
+
+/* NOTICES */
+.notice{padding:11px 14px;border-radius:var(--rs);font-size:13px;line-height:1.6;margin-bottom:12px;border:1px solid}
+.n-purple{background:var(--purple-light);color:var(--purple-text);border-color:#AFA9EC}
+.n-green{background:var(--green-light);color:var(--green-dark);border-color:var(--green-border)}
+.n-red{background:var(--red-light);color:var(--red-dark);border-color:var(--red-border)}
+.n-amber{background:var(--amber-light);color:var(--amber-dark);border-color:var(--amber-border)}
+
+/* SEC LABELS */
+.slabel{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin:18px 0 9px;padding-bottom:6px;border-bottom:1px solid var(--gray-border)}
+.slabel:first-child{margin-top:0}
+
+/* DASHBOARD */
+.statgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px}
+.statcard{background:var(--white);border:1px solid var(--gray-border);border-radius:var(--rs);padding:12px;text-align:center}
+.statnum{font-size:24px;font-weight:700;line-height:1}
+.statlbl{font-size:11px;color:var(--muted);margin-top:3px;font-weight:500}
+.dcard{background:var(--white);border:1px solid var(--gray-border);border-radius:var(--r);margin-bottom:10px;overflow:hidden}
+.dhead{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;cursor:pointer;transition:background 0.12s}
+.dhead:hover{background:var(--gray-bg)}
+.droom{font-size:14px;font-weight:600}
+.dmeta{font-size:12px;color:var(--muted);margin-top:1px}
+.dright{display:flex;align-items:center;gap:8px}
+.chev{font-size:18px;color:var(--muted);line-height:1;transition:transform 0.2s;font-weight:300}
+.chev.open{transform:rotate(45deg)}
+.dbody{display:none;border-top:1px solid var(--gray-border);padding:0 16px}
+.dbody.open{display:block}
+.dentry{padding:11px 0;border-bottom:1px solid var(--gray-border)}
+.dentry:last-child{border-bottom:none}
+.dentry-title{font-size:13px;font-weight:600;margin-bottom:3px}
+.dentry-note{font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:5px}
+.dtags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:7px}
+.replybox{background:var(--blue-light);border-radius:var(--rs);padding:9px 12px;font-size:13px;color:var(--blue-dark);line-height:1.5;margin-top:5px}
+.replybox strong{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:2px}
+.reply-area{margin-top:7px}
+.reply-area textarea{font-size:13px;min-height:50px;border:1px solid var(--gray-border)}
+.rsave{margin-top:5px;padding:6px 13px;font-size:12px;font-weight:600;border-radius:var(--rs);border:1px solid var(--gray-border);background:var(--white);color:var(--text);cursor:pointer;font-family:'DM Sans',sans-serif}
+.rsave:hover{background:var(--gray-bg)}
+.gnote{padding:10px 0;font-size:13px;color:var(--muted);line-height:1.5;border-top:1px solid var(--gray-border)}
+.gnote strong{color:var(--text)}
+.empty{text-align:center;padding:48px 20px;color:var(--muted)}
+.empty-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:5px}
+
+/* HERO */
+.hero{background:var(--purple);color:white;padding:32px 20px 28px;text-align:center;border-radius:var(--r);margin-bottom:18px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(255,255,255,0.03) 0,rgba(255,255,255,0.03) 1px,transparent 0,transparent 50%);background-size:20px 20px}
+.hero-tag{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;opacity:0.6;margin-bottom:8px}
+.hero-title{font-size:24px;font-weight:600;line-height:1.2;margin-bottom:8px}
+.hero-sub{font-size:14px;opacity:0.7;line-height:1.5}
+.howgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+.howcard{background:var(--white);border:1px solid var(--gray-border);border-radius:var(--rs);padding:14px}
+.hownum{width:24px;height:24px;border-radius:50%;background:var(--purple-light);color:var(--purple-text);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-bottom:7px}
+.howtitle{font-size:13px;font-weight:600;margin-bottom:2px}
+.howdesc{font-size:12px;color:var(--muted);line-height:1.5}
+
+/* DONE */
+.done-icon{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:22px}
+.done-icon.clear{background:var(--green-light)}
+.done-icon.hold{background:var(--red-light)}
+.sumrow{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--gray-border);font-size:13px}
+.sumrow:last-child{border-bottom:none}
+.sumkey{color:var(--muted);font-weight:500}
+.sumval{font-weight:600;text-align:right;max-width:60%}
+
+/* QR PAGE */
+.qrcard{background:var(--white);border:1px solid var(--gray-border);border-radius:var(--r);padding:18px;margin-bottom:12px}
+.mono{font-family:'DM Mono',monospace;font-size:12px;background:var(--gray-bg);padding:9px 13px;border-radius:var(--rs);color:var(--purple-text);word-break:break-all;margin:9px 0;border:1px solid var(--gray-border)}
+.step-row{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--gray-border);align-items:flex-start}
+.step-row:last-child{border-bottom:none}
+.step-num{width:26px;height:26px;border-radius:50%;background:var(--purple-light);color:var(--purple-text);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.step-text{font-size:13px;line-height:1.5;color:var(--muted)}
+.step-text strong{color:var(--text)}
+
+/* EXPORT ROW */
+.export-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+
+/* MOBILE */
+@media(max-width:520px){
+  .g2{grid-template-columns:1fr}
+  .statgrid{grid-template-columns:repeat(2,1fr)}
+  .howgrid{grid-template-columns:1fr}
+  .btnrow{flex-direction:column}
+  .navtab{padding:0 11px;font-size:12px}
+  .hero-title{font-size:20px}
+  .brand-text .sub{display:none}
+  .sbtns{gap:2px}
+  .sbtn{padding:4px 6px;font-size:10px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="topnav">
+  <div class="brand">
+    <div class="brand-mark">PB</div>
+    <div class="brand-text">
+      <div class="name">Pre-Board</div>
+      <div class="sub">YHC 6095 6th Ave</div>
+    </div>
+  </div>
+  <div class="navtabs">
+    <button class="navtab on" onclick="nav('home',this)">Home</button>
+    <button class="navtab" onclick="nav('inspect',this)">Inspection</button>
+    <button class="navtab" onclick="nav('dash',this)">GC Dashboard</button>
+    <button class="navtab" onclick="nav('qr',this)">QR Setup</button>
+  </div>
+</nav>
+
+<!-- ══ HOME ══ -->
+<div id="page-home" class="page on">
+  <div class="wrap">
+    <div class="hero">
+      <div class="hero-tag">Whitehorse, Yukon &mdash; Pre-Board System</div>
+      <div class="hero-title">Digital Boarding Readiness Checklist</div>
+      <div class="hero-sub">For subgrade foremen &amp; GC superintendents.<br>Scan a room QR code or tap below to start.</div>
+    </div>
+    <div class="howgrid">
+      <div class="howcard">
+        <div class="hownum">1</div>
+        <div class="howtitle">Scan or open</div>
+        <div class="howdesc">Each room has a QR code. Scan it or tap Inspection to open the checklist manually.</div>
+      </div>
+      <div class="howcard">
+        <div class="hownum">2</div>
+        <div class="howtitle">Work through items</div>
+        <div class="howdesc">Pass, Flag, or N/A each item. Flagging a deficiency opens a note panel inline.</div>
+      </div>
+      <div class="howcard">
+        <div class="hownum">3</div>
+        <div class="howtitle">Capture deficiencies</div>
+        <div class="howdesc">Each flagged item captures a written note, responsible trade, and boarding impact.</div>
+      </div>
+      <div class="howcard">
+        <div class="hownum">4</div>
+        <div class="howtitle">GC tracks live</div>
+        <div class="howdesc">The GC dashboard shows all rooms. Subs enter remediation responses directly there.</div>
+      </div>
+    </div>
+    <button class="btn btn-purple btn-full" style="font-size:15px;padding:13px" onclick="nav('inspect', document.querySelectorAll('.navtab')[1])">Start inspection &rarr;</button>
+  </div>
+</div>
+
+<!-- ══ INSPECT ══ -->
+<div id="page-inspect" class="page">
+  <div class="wrap">
+
+    <!-- Step 1: Identity -->
+    <div id="step-id">
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Inspector details</span>
+          <span class="badge b-purple">Step 1 of 2</span>
+        </div>
+        <div class="card-body">
+          <div class="g2">
+            <div class="field"><label class="lbl">Foreman name</label><input type="text" id="f-name" placeholder="Your full name"></div>
+            <div class="field"><label class="lbl">Trade</label>
+              <select id="f-trade">
+                <option value="">Select trade...</option>
+                <option>Drywall / boarding</option>
+                <option>Framing</option>
+                <option>Mechanical</option>
+                <option>Electrical</option>
+                <option>GC / superintendent</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="g2">
+            <div class="field"><label class="lbl">Floor / level</label>
+              <select id="f-floor">
+                <option value="">Select floor...</option>
+                <option>Level 1</option><option>Level 2</option><option>Level 3</option>
+                <option>Level 4</option><option>Level 5</option><option>Parkade / roof</option>
+              </select>
+            </div>
+            <div class="field"><label class="lbl">Room / unit number</label>
+              <input type="text" id="f-room" placeholder="e.g. 312">
+            </div>
+          </div>
+          <div class="field"><label class="lbl">Room type</label>
+            <select id="f-rtype" onchange="checkWR()">
+              <option value="">Select type...</option>
+              <option>Residential unit</option>
+              <option>Washroom / bathroom</option>
+              <option>Ensuite</option>
+              <option>Common laundry room</option>
+              <option>Janitor / storage room</option>
+              <option>Corridor / hallway</option>
+              <option>Common area / amenity</option>
+              <option>Mechanical / electrical room</option>
+            </select>
+          </div>
+          <div id="wr-notice" class="notice n-purple" style="display:none">
+            <strong>Washroom / wet area:</strong> Spec requires 16mm water-resistant board (ASTM C1396) on walls, and glass mat water-resistant backing board (ASTM C1178) behind all tile. Confirm correct board type is on hand before boarding.
+          </div>
+          <button class="btn btn-purple btn-full" onclick="startChecklist()">Begin checklist &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: Checklist -->
+    <div id="step-cl" style="display:none">
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title" id="cl-room-label">Checklist</span>
+          <span class="badge b-purple">Step 2 of 2</span>
+        </div>
+        <div class="card-body">
+          <div class="countrow">
+            <div class="chip"><div class="dot dg"></div><span id="cnt-p">0 passed</span></div>
+            <div class="chip"><div class="dot dr"></div><span id="cnt-f">0 flagged</span></div>
+            <div class="chip"><div class="dot dgy"></div><span id="cnt-n">0 N/A</span></div>
+            <div class="chip"><div class="dot da"></div><span id="cnt-pnd">0 pending</span></div>
+          </div>
+          <div class="prog-wrap"><div class="prog-fill" id="prog" style="width:0%"></div></div>
+
+          <div class="slabel">Structural / framing</div>
+          <div id="sec-framing"></div>
+          <div class="slabel">Ambient conditions (spec 1.5)</div>
+          <div id="sec-ambient"></div>
+          <div class="slabel">MEP rough-in</div>
+          <div id="sec-mep"></div>
+          <div class="slabel">Insulation &amp; airtightness</div>
+          <div id="sec-ins"></div>
+          <div class="slabel">Cleanliness &amp; access</div>
+          <div id="sec-clean"></div>
+
+          <div class="slabel">General notes</div>
+          <div class="field"><textarea id="f-general" placeholder="Any overall comments for this room (optional)..."></textarea></div>
+
+          <div id="submit-notice" style="display:none"></div>
+          <div class="btnrow">
+            <button class="btn btn-out" onclick="goBack()">&#8592; Back</button>
+            <button class="btn btn-red" onclick="doSubmit('hold')">Submit &mdash; Hold</button>
+            <button class="btn btn-green" onclick="doSubmit('clear')">Submit &mdash; Clear</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3: Done -->
+    <div id="step-done" style="display:none">
+      <div class="card">
+        <div class="card-body" style="text-align:center;padding-top:28px;padding-bottom:28px">
+          <div class="done-icon" id="done-icon"></div>
+          <div id="done-heading" style="font-size:18px;font-weight:600;margin-bottom:6px"></div>
+          <div id="done-sub" style="font-size:13px;color:var(--muted);margin-bottom:20px"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Submission summary</span></div>
+        <div class="card-body" id="done-summary"></div>
+      </div>
+      <button class="btn btn-purple btn-full" onclick="resetForm()">Inspect another room &rarr;</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ DASHBOARD ══ -->
+<div id="page-dash" class="page">
+  <div class="wrap">
+    <div class="statgrid">
+      <div class="statcard"><div class="statnum" id="d-total">0</div><div class="statlbl">Inspected</div></div>
+      <div class="statcard"><div class="statnum" style="color:var(--green)" id="d-clear">0</div><div class="statlbl">Clear</div></div>
+      <div class="statcard"><div class="statnum" style="color:var(--red)" id="d-hold">0</div><div class="statlbl">On hold</div></div>
+      <div class="statcard"><div class="statnum" style="color:var(--amber)" id="d-defs">0</div><div class="statlbl">Open deficiencies</div></div>
+    </div>
+    <div id="dash-empty" class="empty">
+      <div class="empty-title">No inspections yet</div>
+      <div style="font-size:13px">Submit rooms using the Inspection tab. They will appear here.</div>
+    </div>
+    <div id="dash-list"></div>
+    <div class="export-row">
+      <button class="btn btn-out" onclick="exportCSV()">&#8595; Download CSV log</button>
+      <button class="btn btn-out" onclick="clearAll()">Clear all data</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ QR SETUP ══ -->
+<div id="page-qr" class="page">
+  <div class="wrap">
+    <div class="notice n-purple" style="margin-bottom:14px">
+      <strong>How QR codes work with this site:</strong> Each QR code is just a link to this page with the room number pre-filled. You generate one QR per room, print and laminate it, and tape it to the door frame. The foreman scans it and the room number auto-loads into the form.
+    </div>
+    <div class="qrcard">
+      <div style="font-size:13px;font-weight:600;margin-bottom:12px">Step-by-step setup</div>
+      <div class="step-row">
+        <div class="step-num">1</div>
+        <div class="step-text"><strong>Copy this site's URL</strong> from your browser address bar after uploading to GitHub Pages. It will look like:<div class="mono">https://yourname.github.io/preboard/</div></div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">2</div>
+        <div class="step-text"><strong>Add room parameters</strong> to the end of the URL for each room. For example, Room 312 on Level 3:<div class="mono">https://yourname.github.io/preboard/?floor=Level+3&room=312&type=Residential+unit</div>The form will auto-fill the floor, room number, and room type when opened.</div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">3</div>
+        <div class="step-text"><strong>Generate QR codes for free</strong> at <strong>qr.io</strong> or <strong>qr-code-generator.com</strong>. Paste each room URL in, download the QR image.</div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">4</div>
+        <div class="step-text"><strong>Print and laminate.</strong> Include the room number in large text on the card. Tape to the door frame before framing inspection begins.</div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">5</div>
+        <div class="step-text"><strong>Share the dashboard URL</strong> with your GC and PM so they can monitor room status and respond to deficiencies from any device.</div>
+      </div>
+    </div>
+
+    <div class="qrcard">
+      <div style="font-size:13px;font-weight:600;margin-bottom:10px">Example room URLs for this project</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Replace <em>yourname.github.io/preboard</em> with your actual site URL</div>
+      <div class="mono">?floor=Level+1&room=101&type=Residential+unit</div>
+      <div class="mono">?floor=Level+2&room=205&type=Washroom+%2F+bathroom</div>
+      <div class="mono">?floor=Level+3&room=312&type=Residential+unit</div>
+      <div class="mono">?floor=Level+1&room=Corridor-1A&type=Corridor+%2F+hallway</div>
+    </div>
+
+    <div class="qrcard">
+      <div style="font-size:13px;font-weight:600;margin-bottom:10px">Uploading to GitHub Pages (free)</div>
+      <div class="step-row">
+        <div class="step-num">1</div>
+        <div class="step-text">Go to <strong>github.com</strong> and create a free account if you don't have one.</div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">2</div>
+        <div class="step-text">Click <strong>New repository</strong>. Name it <em>preboard</em>. Make it Public. Click Create.</div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">3</div>
+        <div class="step-text">Click <strong>uploading an existing file</strong>, drag the downloaded HTML file in, name it <em>index.html</em>, and click Commit.</div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">4</div>
+        <div class="step-text">Go to <strong>Settings &rarr; Pages</strong>. Under Source, select <em>main branch</em>. Click Save. Your site will be live at <em>yourname.github.io/preboard</em> within 2 minutes.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── DATA ──
+const ITEMS = {
+  framing:[
+    {id:'f1', t:'Framing plumb and true (tolerance 1:1200 — spec 3.2.5)'},
+    {id:'f2', t:'Blocking installed at all fixture, grab bar and cabinet locations'},
+    {id:'f3', t:'Door headers correct size and fully fastened'},
+    {id:'f4', t:'Control joints located per spec (max 10m corridors, 15m ceilings)'},
+    {id:'f5', t:'Cornice cap installed where partitions do not reach ceiling'},
+  ],
+  ambient:[
+    {id:'a1', t:'Temperature \u226510\u00b0C confirmed — spec requires 48hrs before and during boarding'},
+    {id:'a2', t:'Temperature \u226421\u00b0C confirmed — upper limit per spec 1.5.1'},
+    {id:'a3', t:'Surfaces dry, clean, and frost-free'},
+    {id:'a4', t:'Ventilation adequate to remove excess moisture'},
+  ],
+  mep:[
+    {id:'m1', t:'Electrical rough-in complete and inspected by EC foreman'},
+    {id:'m2', t:'All electrical boxes secured and flush with framing face'},
+    {id:'m3', t:'Plumbing rough-in complete and pressure tested'},
+    {id:'m4', t:'HVAC ductwork rough-in complete and properly supported'},
+    {id:'m5', t:'Acoustic sealant applied at partition perimeters — spec 3.3.6'},
+    {id:'m6', t:'Resilient furring installed where required — spec 3.2.13'},
+  ],
+  ins:[
+    {id:'i1', t:'Insulation installed in all exterior wall cavities'},
+    {id:'i2', t:'Sound attenuation batts in demising partitions and party walls'},
+    {id:'i3', t:'Air barrier complete, no gaps at penetrations or perimeters'},
+  ],
+  clean:[
+    {id:'c1', t:'Area clean — no debris, standing water, or wet materials on floor'},
+    {id:'c2', t:'Board type on hand matches room type (WR board for wet areas)'},
+    {id:'c3', t:'Safe access for boarding crew — no tripping hazards'},
+  ]
+};
+
+const TRADES = ['Framing','Electrical','Plumbing','Mechanical','Insulation','GC'];
+
+let states = {}, defNotes = {}, defTrades = {}, defImpact = {};
+let submissions = [];
+let roomInfo = {};
+
+// ── URL PARAMS: pre-fill from QR code ──
+(function(){
+  const p = new URLSearchParams(window.location.search);
+  if(p.get('room')) { document.getElementById('f-room').value = p.get('room'); }
+  if(p.get('floor')) {
+    const sel = document.getElementById('f-floor');
+    for(let o of sel.options) if(o.value === p.get('floor')) { o.selected=true; break; }
+  }
+  if(p.get('type')) {
+    const sel = document.getElementById('f-rtype');
+    for(let o of sel.options) if(o.value === p.get('type')) { o.selected=true; break; }
+    checkWR();
+  }
+  if(p.get('room') || p.get('floor')) {
+    // Auto-navigate to inspect tab if QR code was scanned
+    setTimeout(()=>{
+      document.querySelectorAll('.navtab').forEach(t=>t.classList.remove('on'));
+      document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+      document.getElementById('page-inspect').classList.add('on');
+      document.querySelectorAll('.navtab')[1].classList.add('on');
+    }, 100);
+  }
+})();
+
+function checkWR(){
+  const v = document.getElementById('f-rtype').value;
+  const wet = v.includes('ashroom') || v.includes('nsuite') || v.includes('aundry') || v.includes('anitor');
+  document.getElementById('wr-notice').style.display = wet ? 'block' : 'none';
+}
+
+function ts(){
+  const n = new Date();
+  return n.toLocaleDateString('en-CA') + ' ' + n.toLocaleTimeString('en-CA',{hour:'2-digit',minute:'2-digit'});
+}
+
+function nav(id, btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.navtab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('page-'+id).classList.add('on');
+  if(btn) btn.classList.add('on');
+  if(id==='dash') renderDash();
+  window.scrollTo(0,0);
+}
+
+// ── BUILD CHECKLIST ──
+function buildSec(secId, items){
+  const c = document.getElementById(secId);
+  c.innerHTML = '';
+  items.forEach(item => {
+    states[item.id] = 'pending';
+    const div = document.createElement('div');
+    div.className = 'check-item';
+    div.id = 'ci-' + item.id;
+    div.innerHTML = `
+      <div class="check-row">
+        <span class="check-label">${item.t}</span>
+        <div class="sbtns">
+          <button class="sbtn pass" onclick="setState('${item.id}','pass',this)">Pass</button>
+          <button class="sbtn flag" onclick="setState('${item.id}','flag',this)">Flag</button>
+          <button class="sbtn na" onclick="setState('${item.id}','na',this)">N/A</button>
+        </div>
+      </div>
+      <div class="defpanel" id="dp-${item.id}">
+        <div class="field"><label class="lbl">Deficiency description *</label>
+          <textarea id="dn-${item.id}" placeholder="Describe exactly what is wrong — location in room, dimensions, severity..."></textarea>
+        </div>
+        <div class="field"><label class="lbl">Responsible trade</label>
+          <div class="trade-pills">${TRADES.map(tr=>`<span class="tpill" onclick="setTrade('${item.id}','${tr}',this)">${tr}</span>`).join('')}</div>
+        </div>
+        <div class="field"><label class="lbl">Boarding impact</label>
+          <div class="improw">
+            <div class="impbtn hold" id="ih-${item.id}" onclick="setImpact('${item.id}','hold',this)">Hold — must fix first</div>
+            <div class="impbtn minor" id="im-${item.id}" onclick="setImpact('${item.id}','minor',this)">Minor — can board around</div>
+          </div>
+        </div>
+      </div>`;
+    c.appendChild(div);
+  });
+}
+
+function setState(id, s, btn){
+  states[id] = s;
+  const ci = document.getElementById('ci-'+id);
+  ci.className = 'check-item' + (s==='pass' ? ' passed' : s==='flag' ? ' flagged' : s==='na' ? ' skipped' : '');
+  btn.closest('.sbtns').querySelectorAll('.sbtn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  const dp = document.getElementById('dp-'+id);
+  dp.classList.toggle('open', s==='flag');
+  updateCounts();
+}
+
+function setTrade(id, trade, el){
+  defTrades[id] = trade;
+  el.closest('.trade-pills').querySelectorAll('.tpill').forEach(p=>p.classList.remove('on'));
+  el.classList.add('on');
+}
+
+function setImpact(id, impact, el){
+  defImpact[id] = impact;
+  document.getElementById('ih-'+id).classList.remove('on');
+  document.getElementById('im-'+id).classList.remove('on');
+  el.classList.add('on');
+}
+
+function updateCounts(){
+  const vals = Object.values(states);
+  const total = vals.length;
+  const pass = vals.filter(s=>s==='pass').length;
+  const flag = vals.filter(s=>s==='flag').length;
+  const na = vals.filter(s=>s==='na').length;
+  const pnd = vals.filter(s=>s==='pending').length;
+  document.getElementById('cnt-p').textContent = pass + ' passed';
+  document.getElementById('cnt-f').textContent = flag + ' flagged';
+  document.getElementById('cnt-n').textContent = na + ' N/A';
+  document.getElementById('cnt-pnd').textContent = pnd + ' pending';
+  document.getElementById('prog').style.width = Math.round((pass+flag+na)/total*100) + '%';
+}
+
+function startChecklist(){
+  const name = document.getElementById('f-name').value.trim();
+  const trade = document.getElementById('f-trade').value;
+  const floor = document.getElementById('f-floor').value;
+  const room = document.getElementById('f-room').value.trim();
+  const rtype = document.getElementById('f-rtype').value;
+  if(!name || !trade || !floor || !room || !rtype){
+    alert('Please complete all fields before starting the checklist.');
+    return;
+  }
+  roomInfo = {name, trade, floor, room, rtype, time: ts()};
+  states={}; defNotes={}; defTrades={}; defImpact={};
+  buildSec('sec-framing', ITEMS.framing);
+  buildSec('sec-ambient', ITEMS.ambient);
+  buildSec('sec-mep', ITEMS.mep);
+  buildSec('sec-ins', ITEMS.ins);
+  buildSec('sec-clean', ITEMS.clean);
+  updateCounts();
+  document.getElementById('cl-room-label').textContent = floor + ' \u2014 Room ' + room;
+  document.getElementById('submit-notice').style.display = 'none';
+  document.getElementById('step-id').style.display = 'none';
+  document.getElementById('step-cl').style.display = 'block';
+  window.scrollTo(0,0);
+}
+
+function goBack(){
+  document.getElementById('step-cl').style.display = 'none';
+  document.getElementById('step-id').style.display = 'block';
+  window.scrollTo(0,0);
+}
+
+function doSubmit(decision){
+  const allItems = [...ITEMS.framing,...ITEMS.ambient,...ITEMS.mep,...ITEMS.ins,...ITEMS.clean];
+  const flags = Object.entries(states).filter(([k,v])=>v==='flag');
+
+  if(decision==='clear' && flags.length > 0){
+    const el = document.getElementById('submit-notice');
+    el.className = 'notice n-red';
+    el.style.display = 'block';
+    el.textContent = flags.length + ' item(s) are flagged. Resolve deficiencies or submit as Hold.';
+    el.scrollIntoView({behavior:'smooth'});
+    return;
+  }
+
+  const deficiencies = flags.map(([k]) => {
+    const item = allItems.find(i=>i.id===k);
+    return {
+      id: k,
+      label: item ? item.t : k,
+      note: document.getElementById('dn-'+k)?.value?.trim() || '',
+      trade: defTrades[k] || '',
+      impact: defImpact[k] || 'hold',
+      reply: null,
+      resolved: false
+    };
+  });
+
+  const rec = {
+    ...roomInfo,
+    decision,
+    general: document.getElementById('f-general').value.trim(),
+    deficiencies,
+    submitted: ts(),
+    passCount: Object.values(states).filter(s=>s==='pass').length
+  };
+  submissions.push(rec);
+
+  // Show done screen
+  document.getElementById('step-cl').style.display = 'none';
+  document.getElementById('step-done').style.display = 'block';
+
+  const icon = document.getElementById('done-icon');
+  const heading = document.getElementById('done-heading');
+  const sub = document.getElementById('done-sub');
+  if(decision === 'clear'){
+    icon.className = 'done-icon clear';
+    icon.textContent = '\u2713';
+    heading.textContent = 'Room cleared to board';
+    sub.textContent = roomInfo.floor + ' \u2014 Room ' + roomInfo.room + ' submitted at ' + rec.submitted;
+  } else {
+    icon.className = 'done-icon hold';
+    icon.textContent = '\u26a0';
+    heading.textContent = 'Room placed on hold';
+    sub.textContent = deficiencies.length + ' deficiencie(s) logged. Notify responsible trades.';
+  }
+
+  const sumEl = document.getElementById('done-summary');
+  const allItems2 = [...ITEMS.framing,...ITEMS.ambient,...ITEMS.mep,...ITEMS.ins,...ITEMS.clean];
+  let html = `
+    <div class="sumrow"><span class="sumkey">Inspector</span><span class="sumval">${rec.name} &mdash; ${rec.trade}</span></div>
+    <div class="sumrow"><span class="sumkey">Room</span><span class="sumval">${rec.floor} \u2014 ${rec.room} (${rec.rtype})</span></div>
+    <div class="sumrow"><span class="sumkey">Submitted</span><span class="sumval">${rec.submitted}</span></div>
+    <div class="sumrow"><span class="sumkey">Items passed</span><span class="sumval">${rec.passCount}</span></div>
+    <div class="sumrow"><span class="sumkey">Deficiencies</span><span class="sumval">${deficiencies.length}</span></div>
+    <div class="sumrow"><span class="sumkey">Decision</span><span class="sumval"><span class="badge ${decision==='clear'?'b-clear':'b-hold'}">${decision==='clear'?'Clear to board':'Hold'}</span></span></div>`;
+  if(deficiencies.length > 0){
+    html += '<div style="margin-top:12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:8px">Deficiency log</div>';
+    deficiencies.forEach(d=>{
+      html += `<div style="padding:8px 0;border-top:1px solid var(--gray-border);font-size:13px">
+        <div style="font-weight:600;margin-bottom:3px">${d.label}</div>
+        <div style="color:var(--muted);margin-bottom:4px">${d.note || '<em>No note entered</em>'}</div>
+        <div style="display:flex;gap:5px">
+          ${d.trade?`<span class="badge b-gray">${d.trade}</span>`:''}
+          <span class="badge ${d.impact==='minor'?'b-pending':'b-hold'}">${d.impact==='minor'?'Minor':'Hold'}</span>
+        </div>
+      </div>`;
+    });
+  }
+  sumEl.innerHTML = html;
+  window.scrollTo(0,0);
+}
+
+function resetForm(){
+  document.getElementById('step-done').style.display = 'none';
+  document.getElementById('step-id').style.display = 'block';
+  document.getElementById('f-name').value = '';
+  document.getElementById('f-trade').value = '';
+  document.getElementById('f-floor').value = '';
+  document.getElementById('f-room').value = '';
+  document.getElementById('f-rtype').value = '';
+  document.getElementById('f-general').value = '';
+  document.getElementById('wr-notice').style.display = 'none';
+  window.scrollTo(0,0);
+}
+
+// ── DASHBOARD ──
+function renderDash(){
+  const total = submissions.length;
+  const clr = submissions.filter(s=>s.decision==='clear').length;
+  const hld = submissions.filter(s=>s.decision==='hold').length;
+  const openDefs = submissions.reduce((a,s)=>a + s.deficiencies.filter(d=>!d.resolved).length, 0);
+  document.getElementById('d-total').textContent = total;
+  document.getElementById('d-clear').textContent = clr;
+  document.getElementById('d-hold').textContent = hld;
+  document.getElementById('d-defs').textContent = openDefs;
+  document.getElementById('dash-empty').style.display = total===0 ? 'block' : 'none';
+
+  const list = document.getElementById('dash-list');
+  list.innerHTML = '';
+  submissions.slice().reverse().forEach((s, ri) => {
+    const idx = submissions.length - 1 - ri;
+    const card = document.createElement('div');
+    card.className = 'dcard';
+    const defBadge = s.deficiencies.length > 0
+      ? `<span style="font-size:12px;color:var(--muted)">${s.deficiencies.length} deficiencie(s)</span>` : '';
+    const statusBadge = `<span class="badge ${s.decision==='clear'?'b-clear':'b-hold'}">${s.decision==='clear'?'Clear':'Hold'}</span>`;
+
+    let defHtml = '';
+    if(s.deficiencies.length === 0){
+      defHtml = '<div style="padding:12px 0;font-size:13px;color:var(--muted)">No deficiencies recorded &mdash; all items passed.</div>';
+    } else {
+      defHtml = s.deficiencies.map((d,di) => {
+        const replyHtml = d.reply
+          ? `<div class="replybox"><strong>Sub remediation response</strong>${d.reply}</div>`
+          : `<div class="reply-area">
+              <textarea placeholder="Sub foreman: enter remediation notes here when work is complete..." id="rep-${idx}-${di}"></textarea>
+              <button class="rsave" onclick="saveReply(${idx},${di})">Save response &amp; mark resolved</button>
+            </div>`;
+        return `<div class="dentry">
+          <div class="dtags">
+            <span class="badge ${d.impact==='minor'?'b-pending':'b-hold'}">${d.impact==='minor'?'Minor':'Hold'}</span>
+            ${d.trade?`<span class="badge b-gray">${d.trade}</span>`:''}
+            ${d.resolved?`<span class="badge b-clear">Resolved</span>`:''}
+          </div>
+          <div class="dentry-title">${d.label}</div>
+          <div class="dentry-note">${d.note || '<em>No note entered by inspector</em>'}</div>
+          ${replyHtml}
+        </div>`;
+      }).join('');
+    }
+
+    const gnoteHtml = s.general
+      ? `<div class="gnote"><strong>General notes:</strong> ${s.general}</div>` : '';
+
+    card.innerHTML = `
+      <div class="dhead" onclick="toggleCard(this,'dl-${idx}')">
+        <div>
+          <div class="droom">${s.floor} &mdash; Room ${s.room}</div>
+          <div class="dmeta">${s.name} &middot; ${s.trade} &middot; ${s.submitted}</div>
+        </div>
+        <div class="dright">${defBadge}${statusBadge}<span class="chev">+</span></div>
+      </div>
+      <div class="dbody" id="dl-${idx}">${defHtml}${gnoteHtml}</div>`;
+    list.appendChild(card);
+  });
+}
+
+function toggleCard(head, bodyId){
+  const body = document.getElementById(bodyId);
+  const chev = head.querySelector('.chev');
+  const open = body.classList.toggle('open');
+  chev.classList.toggle('open', open);
+  chev.textContent = open ? '\u00d7' : '+';
+}
+
+function saveReply(subIdx, defIdx){
+  const val = document.getElementById('rep-'+subIdx+'-'+defIdx)?.value?.trim();
+  if(!val){ alert('Please enter remediation notes before saving.'); return; }
+  submissions[subIdx].deficiencies[defIdx].reply = val;
+  submissions[subIdx].deficiencies[defIdx].resolved = true;
+  renderDash();
+}
+
+function clearAll(){
+  if(submissions.length === 0){ alert('No data to clear.'); return; }
+  if(confirm('Clear all ' + submissions.length + ' submissions? This cannot be undone.')){ submissions=[]; renderDash(); }
+}
+
+// ── CSV EXPORT ──
+function exportCSV(){
+  if(submissions.length === 0){ alert('No submissions to export yet.'); return; }
+  let csv = 'Submitted,Floor,Room,Room type,Inspector,Trade,Decision,Passed items,Deficiency item,Note,Responsible trade,Impact,Sub response,Resolved\n';
+  submissions.forEach(s => {
+    if(s.deficiencies.length === 0){
+      csv += `"${s.submitted}","${s.floor}","${s.room}","${s.rtype}","${s.name}","${s.trade}","${s.decision}","${s.passCount}",,,,,,\n`;
+    } else {
+      s.deficiencies.forEach(d => {
+        csv += `"${s.submitted}","${s.floor}","${s.room}","${s.rtype}","${s.name}","${s.trade}","${s.decision}","${s.passCount}","${d.label.replace(/"/g,"'")}","${d.note.replace(/"/g,"'")}","${d.trade}","${d.impact}","${(d.reply||'').replace(/"/g,"'")}","${d.resolved?'yes':'no'}"\n`;
+      });
+    }
+  });
+  const blob = new Blob([csv], {type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'preboard-log-' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
